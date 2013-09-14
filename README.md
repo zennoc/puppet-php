@@ -1,4 +1,4 @@
-= Puppet module: php
+# Puppet module: php
 
 This is a Puppet module for php based on the second generation layout ("NextGen") of Example42 Puppet Modules.
 
@@ -14,7 +14,7 @@ This module requires functions provided by the Example42 Puppi module (you need 
 
 For detailed info about the logic and usage patterns of Example42 modules check the DOCS directory on Example42 main modules set.
 
-== USAGE - Basic management
+## USAGE - Basic management
 
 * Install php with default settings
 
@@ -38,7 +38,13 @@ For detailed info about the logic and usage patterns of Example42 modules check 
           audit_only => true
         }
 
-== USAGE - Module installation
+* Install php in an nginx environment
+
+        class { 'php':
+          service => 'nginx'
+        }
+
+## USAGE - Module installation
 
 * Install a new module
 
@@ -58,34 +64,55 @@ For detailed info about the logic and usage patterns of Example42 modules check 
 
 * By default module package name is php-$title for RedHat and php5-$title . You can override this prefix.
 
-        php::module { "apc": 
+        php::module { "apc":
           module_prefix => "php-"
         }
 
 
-== USAGE - Pear Management
+## USAGE - Pear Management
 
-* Install a pear package 
+* Install a pear package
 
         php::pear::module { "XML_Util": }
 
-* Set a config option 
+* Install a pear package from a remote repository
+
+        php::pear::module { 'PHPUnit':
+          repository  => 'pear.phpunit.de',
+          use_package => 'no',
+        }
+
+* Install a pear package will all dependencies (--alldeps)
+
+        php::pear::module { 'PHPUnit':
+          repository  => 'pear.phpunit.de',
+          alldeps => 'true',
+        }
+        
+* Set a config option
 
         php::pear::config { http_proxy: value => "myproxy:8080" }
 
 
-== USAGE - Pecl Management
+## USAGE - Pecl Management
 
 * Install a pecl package
 
         php::pecl::module { "XML_Util": }
 
-* Set a config option 
+* Install a pecl package from source specifying the preferred state (note that you must have the package 'make' installed on your system)
+
+        php::pecl::module { "xhprof":
+          use_package     => 'false',
+          preferred_state => 'beta',
+        }
+
+* Set a config option
 
         php::pecl::config { http_proxy: value => "myproxy:8080" }
 
 
-== USAGE - Overrides and Customizations
+## USAGE - Overrides and Customizations
 * Use custom sources for main config file
 
         class { 'php':
@@ -115,3 +142,5 @@ For detailed info about the logic and usage patterns of Example42 modules check 
 
 
 
+
+[![Build Status](https://travis-ci.org/example42/puppet-php.png?branch=master)](https://travis-ci.org/example42/puppet-php)
